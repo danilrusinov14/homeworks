@@ -55,3 +55,41 @@ c = Counter()
 c.value = 5         # Атрибут value будет добавлен
 print(c.value)      # Доступ к атрибуту value → 5
 print(c.name)       # Доступ к атрибуту name → None
+
+
+#3
+class Car:
+    def __init__(self, make, model):
+        self.make = make  # марка
+        self.model = model  # модель
+
+    def __getattr__(self, name):
+        # если не найден
+        return "Хз, нет такой информации"
+    
+# Пример использования
+c = Car("Toyota", "Corolla")
+print(c.make)
+print(c.engine_type)
+
+
+#4
+class Rectangle:
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+
+    def __setattr__(self, name, value):
+        if name not in ['width', 'height']:
+            raise AttributeError("Локальные атрибуты нельзя!!")
+        # атрибут допустимый? кайф!
+        super().__setattr__(name, value)
+
+# Пример использования
+r = Rectangle(10, 20)
+r.width = 15  # кайф
+r.height = 25  # кайф
+try:
+    r.color = 'red'  # вызовет исключение
+except AttributeError as e:
+    print(e)  # Вывод: Локальные атрибуты нельзя!!
